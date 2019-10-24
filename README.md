@@ -21,10 +21,32 @@ $ npm i --save @qix/s-cookie
 import cookieSignal from '@qix/s-cookie';
 
 const session_id = cookieSignal(
-	'session_id', // cookie name to bind to
-	'1234',       // (optional) initial value
-	S.value       // (optional, not recommended) signal factory
-	              //     (either S.value (the default) or S.data)
+	// cookie name to bind to
+	'session_id',
+
+	// (optional) options object
+	{
+		// (optional) initial value
+		// (defaults to null)
+		init: '1234',
+
+		// (optional, not recommended) signal factory - 
+		// either S.value (the default) or S.data
+		// (defaults to S.value)
+		factory: S.value,
+
+		// (optional) the Domain on which to set the cookie
+		// (defaults to null)
+		domain: "some.domain.com",
+
+		// (optional) the Path on which to set the cookie
+		// (defaults to null)
+		path: "/",
+
+		// (boolean, optional) if true, sets Secure
+		// (defaults to false)
+		secure: true
+	}
 );
 
 S.root(() => {

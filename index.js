@@ -34,18 +34,41 @@ if (typeof navigator === 'object' && 'cookieEnabled' in navigator && !navigator.
 	setInterval(checkCookies, 100);
 }
 
-export default (name, seed=null, factory=S.value) => {
+export default (
+	name,
+	{
+		init=null,
+		factory=S.value,
+		domain=null,
+		path=null,
+		secure=false
+	} = {}
+) => {
 	if (typeof document !== 'object') {
 		throw new Error('document could not be found! s-cookie does not work outside of browsers');
 	}
 
-	const cookie = factory(seed);
+	const cookie = factory(init);
+
+	const metaChunks = [];
+	if (domain) metaChunks.push(';domain=' + domain);
+	if (path) metaChunks.push(';path=' + path);
+	if (secure) metaChunks.push(';secure');
+	const meta = metaChunks.join('');
+
+	cookie.expireAt = date => {
+		document.cookie = S.sample(cookie) + meta + ";expires=" + date.toUTCString();
+	};
+
+	cookie.expireIn = seconds => {
+		document.cookie = S.sample(cookie) + meta + ";max-age=" + seconds;
+	};
 
 	const cookies = parseCookies();
 	if (name in cookies) {
 		cookie(cookies[name]);
-	} else if (seed !== null) {
-		document.cookie = name + "=" + seed;
+	} else if (init !== null) {
+		document.cookie = name + "=" + init + meta;
 	}
 
 	if (!cookieSubscribers[name]) cookieSubscribers[name] = [];
@@ -53,10 +76,10 @@ export default (name, seed=null, factory=S.value) => {
 
 	S.root(() => {
 		S.on(cookie, () => {
-			document.cookie = name + (
+			document.cookie = name + "=" + (
 				cookie() === null
-					? "=; max-age=0"
-					: "=" + cookie()
+					? (meta + "; max-age=0")
+					: (cookie() + meta)
 			);
 		}, null, true);
 	});

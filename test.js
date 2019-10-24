@@ -31,7 +31,9 @@ const Root = ({error, errorInput, cookieString}) => (
 );
 
 S.root(() => {
-	const error = cookieSignal('error_message', 'This is an error message!');
+	const error = cookieSignal('error_message', {
+		init: 'This is an error message!'
+	});
 
 	// We have to do this because spaces typed in the
 	// input box will get removed by the cookie handler
