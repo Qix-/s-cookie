@@ -44,7 +44,7 @@ export default (name, seed=null, factory=S.value) => {
 	const cookies = parseCookies();
 	if (name in cookies) {
 		cookie(cookies[name]);
-	} else {
+	} else if (seed !== null) {
 		document.cookie = name + "=" + seed;
 	}
 
