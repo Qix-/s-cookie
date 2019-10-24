@@ -2,6 +2,10 @@
 
 `document.cookie` binding for S.js signals.
 
+> Why `@qix/s-cookie` and not `s-cookie` since it's available? Because NPM thinks
+> people are too dumb to understand the difference a hyphen makes in code and banned
+> it under the guise of "security". Sorry, folks.
+
 ## Usage
 
 ```console
