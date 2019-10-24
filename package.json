@@ -1,6 +1,6 @@
 {
   "name": "@qix/s-cookie",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A document.cookie binding for S.js signals",
   "main": "index.js",
   "repository": "github:qix-/s-cookie",
